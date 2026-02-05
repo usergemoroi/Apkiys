@@ -24,8 +24,8 @@ local.properties
 .DS_Store
 Thumbs.db
 
-# APK files
-*.apk
+# APK files (excluding visualgui.apk which should be in repo)
+# *.apk
 *.aab
 
 # NDK

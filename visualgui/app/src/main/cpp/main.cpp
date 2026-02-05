@@ -19,10 +19,10 @@
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
-// Global instances
-std::unique_ptr<GUI> g_GUI;
-std::unique_ptr<ESP> g_ESP;
-std::unique_ptr<Aimbot> g_Aimbot;
+// Global instances (extern declarations from headers)
+extern GUI* g_GUI;
+extern ESP* g_ESP;
+extern Aimbot* g_Aimbot;
 
 // EGL context
 static EGLDisplay g_EGLDisplay = EGL_NO_DISPLAY;
@@ -130,20 +130,15 @@ static bool InitImGui() {
     }
 
     // Create global instances
-    g_GUI = std::make_unique<GUI>();
-    g_ESP = std::make_unique<ESP>();
-    g_Aimbot = std::make_unique<Aimbot>();
+    g_GUI = new GUI();
+    g_ESP = new ESP();
+    g_Aimbot = new Aimbot();
 
     // Initialize GUI
     if (!g_GUI->Init()) {
         LOGE("GUI initialization failed");
         return false;
     }
-
-    // Set global pointers for GUI callbacks
-    ::g_ESP = g_ESP.get();
-    ::g_Aimbot = g_Aimbot.get();
-    ::g_GUI = g_GUI.get();
 
     LOGI("ImGui and GUI initialized successfully");
     return true;
@@ -155,11 +150,15 @@ static void ShutdownImGui() {
 
     if (g_GUI) {
         g_GUI->Shutdown();
-        g_GUI.reset();
+        delete g_GUI;
+        g_GUI = nullptr;
     }
 
-    g_ESP.reset();
-    g_Aimbot.reset();
+    delete g_ESP;
+    g_ESP = nullptr;
+    
+    delete g_Aimbot;
+    g_Aimbot = nullptr;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui::DestroyContext();
