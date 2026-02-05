@@ -1,0 +1,33 @@
+# Compiled output
+*.so
+*.o
+*.a
+
+# Build directories
+build/
+out/
+obj/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Android
+visualgui/.gradle/
+visualgui/app/build/
+visualgui/*.iml
+visualgui/local.properties
+
+# Archives
+*.zip
+*.tar.gz
